@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог ароматов — Perfume{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <p class="eyebrow">КОЛЛЕКЦИЯ АРОМАТОВ</p>
+        <h1>Найди аромат,<br><em>который станет твоим.</em></h1>
+        <p class="hero-description">Открой для себя композиции, которые подчёркивают настроение и индивидуальность.</p>
+        <a class="hero-link" href="#catalog">Смотреть каталог <span>↓</span></a>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+        <div class="hero-orbit orbit-one"></div>
+        <div class="hero-orbit orbit-two"></div>
+        <div class="hero-bottle">
+            <div class="bottle-cap"></div>
+            <div class="bottle-neck"></div>
+            <div class="bottle-body"><span>PARFUM<br><small>EAU DE PARFUM</small></span></div>
+        </div>
+        <span class="hero-art-caption">SCENT · MOOD · MEMORY</span>
+    </div>
+</section>
+
+<section class="catalog-section" id="catalog">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">НАША ПОДБОРКА</p>
+            <h2>Каталог ароматов</h2>
+        </div>
+        <p class="products-count">Найдено товаров: {{ products.count }}<strong></strong></p>
+    </div>
+
+<!--    <form class="filters" method="get">-->
+<!--        <div class="filters-title">-->
+<!--            <span class="filter-icon">☷</span>-->
+<!--            <span>Фильтры</span>-->
+<!--        </div>-->
+<!--        <div class="filter-group">-->
+<!--            <label for="id_min_price">Цена от, ₽</label>-->
+<!--            {{ filter_form.min_price }}-->
+<!--            {{ filter_form.min_price.errors }}-->
+<!--        </div>-->
+<!--        <div class="filter-group">-->
+<!--            <label for="id_max_price">Цена до, ₽</label>-->
+<!--            {{ filter_form.max_price }}-->
+<!--            {{ filter_form.max_price.errors }}-->
+<!--        </div>-->
+<!--        <div class="filter-group">-->
+<!--            <label for="id_date_from">Добавлен с</label>-->
+<!--            {{ filter_form.date_from }}-->
+<!--            {{ filter_form.date_from.errors }}-->
+<!--        </div>-->
+<!--        <div class="filter-group">-->
+<!--            <label for="id_date_to">Добавлен по</label>-->
+<!--            {{ filter_form.date_to }}-->
+<!--            {{ filter_form.date_to.errors }}-->
+<!--        </div>-->
+<!--        <div class="filter-actions">-->
+<!--            <button class="filter-button" type="submit">Применить</button>-->
+<!--            <a class="reset-link" href="">Сбросить</a>-->
+<!--        </div>-->
+<!--        {% if filter_form.non_field_errors %}-->
+<!--            <div class="form-errors">{{ filter_form.non_field_errors }}</div>-->
+<!--        {% endif %}-->
+<!--    </form>-->
+
+
+
+    <form method="GET" class="filters">
+
+      <div class="filters-title">
+           <span class="filter-icon">☷</span>
+         <span>Фильтры</span>
+     </div>
+
+    <input class="filter_price_field"
+        type="number"
+        name="min_price"
+        placeholder="Цена от"
+        min="0"
+        step="100"
+        value="">
+
+    <input class="filter_price_field"
+        type="number"
+        name="max_price"
+        placeholder="Цена до"
+        min="0"
+        step="100"
+    value="">
+>
+
+    <select name="date_order" class="filter_date">
+
+    <option value="newest"selected>
+        Сначала новые
+    </option>
+
+    <option value="oldest"selected>
+        Сначала старые
+    </option>
+
+</select>
+
+    <button type="submit" class="filter-button">
+        Применить фильтры
+    </button>
+
+            <a href="" class="reset-button">
+        Сбросить
+    </a>
+
+</form>
+
+
+
+
+
+    <div class="product-grid">
+        {% for product in products %}
+            <article class="product-card">
+                <div class="product-image-wrap">
+                    {% if product.image %}
+                        <img class="product-image" src="{{ product.image.url }}" alt="{{ product.brand }} — {{ product.name }}" loading="lazy">
+                    {% else %}
+                        <div class="product-placeholder placeholder-{{ forloop.counter0|divisibleby:4|yesno:'one,two' }}">
+                            <div class="placeholder-bottle"><span></span></div>
+                            <span class="placeholder-caption">PARFUM</span>
+                        </div>
+                    {% endif %}
+                    <span class="product-date">{{ product.created_at|date:"d.m.Y" }}</span>
+                </div>
+                <div class="product-info">
+                    <p class="product-brand">{{ product.brand }}</p>
+                    <h3>{{ product.name }}</h3>
+                    {% if product.description %}
+                        <p class="product-description">{{ product.description }}</p>
+                    {% endif %}
+                    <div class="product-bottom">
+                        <span class="product-price">{{ product.price|floatformat:2 }} ₽</span>
+                        <span class="product-arrow" aria-hidden="true">↗</span>
+                    </div>
+                </div>
+            </article>
+        {% empty %}
+            <div class="empty-state">
+                <span class="empty-mark">✳</span>
+                <h3>Пока ничего не найдено</h3>
+                <p>Попробуй изменить диапазон цены или даты добавления.</p>
+                <a class="filter-button empty-reset" href="">Показать все товары</a>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
