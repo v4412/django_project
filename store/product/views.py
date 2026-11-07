@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from http.client import HTTPResponse
+from .models import Product
 
 
-def test(request):
-    return HTTPResponse("hello")
+def home_page(request):
+    products = Product.objects.all()
+    return render(request, 'products/product_list.html', {'products': products})
