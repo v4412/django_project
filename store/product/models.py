@@ -1,5 +1,19 @@
 from django.db import models
 
+
+class Brand(models.Model):
+    name = models.CharField('Название', max_length=100)
+    description = models.TextField('Описание', blank=True)
+    image = models.ImageField('Логотип', upload_to='brands/')
+
+    class Meta:
+        verbose_name = 'Бренд'
+        verbose_name_plural = 'Бренды'
+
+    def __str__(self):
+        return {self.name}
+
+
 class Product(models.Model):
 
     volumes = [

@@ -113,10 +113,6 @@
 
 </form>
 
-
-
-
-
     <div class="product-grid">
         {% for product in products %}
             <article class="product-card">
@@ -129,7 +125,7 @@
                             <span class="placeholder-caption">PARFUM</span>
                         </div>
                     {% endif %}
-                    <span class="product-date">{{ product.created_at|date:"d.m.Y" }}</span>
+                    <span class="product-date">{{ product.date_create|date:"d.m.Y" }}</span>
                 </div>
                 <div class="product-info">
                     <p class="product-brand">{{ product.brand }}</p>
