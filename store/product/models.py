@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Brand(models.Model):
-    name = models.CharField('Название', max_length=100)
+    name = models.CharField('Название', max_length=100, unique=True)
     description = models.TextField('Описание', blank=True)
     image = models.ImageField('Логотип', upload_to='brands/')
 
@@ -23,7 +23,9 @@ class Product(models.Model):
 ]
 
     name = models.CharField('Название', max_length=100)
-    brand = models.CharField('Бренд', max_length=70)
+    #brand = models.CharField('Бренд', max_length=70)
+    brand = models.ForeignKey(Brand, to_field='name', on_delete=models.PROTECT, related_name='products', verbose_name='Бренд', blank=True, null=True)
+
     price = models.DecimalField('Стоимость', max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField('Количество')
     description = models.TextField('Описание', blank=True)
@@ -38,3 +40,5 @@ class Product(models.Model):
 
     def __str__(self):
         return f'{self.name} за {self.price}'
+
+
